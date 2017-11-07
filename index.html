@@ -1,0 +1,27 @@
+<!doctype html>
+<head>
+  <title>Cross Storage Hub</title>
+</head>
+<body>
+  <script type="text/javascript" src="./client.js"></script>
+  <script type="text/javascript">
+    var storage = new CrossStorageClient('./hub.html');
+
+    var setKeys = function () {
+      return storage.set('key1', 'foo').then(function() {
+        return storage.set('key2', 'bar');
+      });
+    };
+
+    storage.onConnect()
+    .then(setKeys)
+    .then(function() {
+      return storage.get('key1');
+    }).then(function(res) {
+      console.log(res); // 'foo'
+    })['catch'](function(err) {
+      console.log(err);
+    });
+  </script>
+</body>
+</html>
